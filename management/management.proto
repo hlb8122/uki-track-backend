@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+message Empty {}
+
+message String {
+    string value = 1;
+}
+
+message ListString {
+    repeated string value = 1;
+}
+
+service ExerciseManagement {
+    rpc AddLiftType (String) returns (Empty);
+    rpc RemoveLiftType (String) returns (Empty);
+    rpc ListLiftTypes (Empty) returns (ListString);
+
+    rpc AddCardioType (String) returns (Empty);
+    rpc RemoveCardioType (String) returns (Empty);
+    rpc ListCardioType (Empty) returns (ListString);
+}
+
+service RoutineManagement {
+    rpc AddEmptyRoutine (String) returns (Empty);
+    rpc CloneRoutine (String) returns (Empty);
+    rpc RemoveRoutine (String) returns (Empty);
+    rpc ListRoutines (Empty) returns (ListString);
+
+    rpc InsertWorkout (RoutineWorkout) returns (Empty);
+}
+
+service WorkoutManagement {
+    rpc AddEmptyWorkout (String) returns (Empty);
+    rpc RemoveWorkout (String) returns (Empty);
+    rpc ListWorkouts (Empty) returns (ListString);
+    
+    rpc InsertSet (WorkoutSet) returns (Empty);
+}
+
+message Workout {
+    string workout_name = 2;
+    uint32 offset = 3;
+    uint32 period = 4;
+}
+
+message RoutineWorkout {
+    string rountine_name = 1;
+    Workout workout = 2;
+}
+
+message Set {
+    string lift_type = 1;
+    oneof weight {
+        uint32 absolute = 2;
+        uint32 percentage_max = 3;
+    }
+    uint32 reps = 4;
+}
+
+message WorkoutSet {
+    string workout_name = 1;
+    Set set = 2;
+}
+
+message Cardio {
+    string cardio_type = 1;
+    oneof weight {
+        uint32 absolute = 2;
+        uint32 percentage_max = 3;
+    }
+    uint32 time = 4;
+}
+
+message WorkoutCardio {
+    string workout_name = 1;
+    Cardio cardio = 2;
+}
